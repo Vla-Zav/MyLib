@@ -1,5 +1,7 @@
 package com.example.forjunitlearn;
 
+
+
 import com.example.forjunitlearn.entitys.Person;
 import com.example.forjunitlearn.repositorys.PersonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -72,6 +74,7 @@ class ForJunitLearnApplicationTests {
     @Disabled
     void personNotFound() throws Exception{
         mockMvc.perform(get("/persons/1"))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isNotFound())
+                .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(EntityNotFoundException.class));
     }
 }
