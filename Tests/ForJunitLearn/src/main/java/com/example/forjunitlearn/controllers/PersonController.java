@@ -31,7 +31,7 @@ public class PersonController {
 
         Optional<Person> person = personRepository.findById(personId);
         if (!person.isPresent())
-            throw new EntityNotFoundException("id-" + personId);
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(person.get());
     }
 
@@ -46,7 +46,7 @@ public class PersonController {
                                                @PathVariable Long personId) throws EntityNotFoundException {
         Optional<Person> p = personRepository.findById(personId);
         if (!p.isPresent())
-            throw new EntityNotFoundException("id-" + personId);
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(personRepository.save(person));
     }
 
@@ -55,7 +55,7 @@ public class PersonController {
             throws EntityNotFoundException {
         Optional<Person> person = personRepository.findById(personId);
         if (!person.isPresent())
-            throw new EntityNotFoundException("id-" + personId);
+            return ResponseEntity.notFound().build();
         personRepository.deleteById(personId);
         return ResponseEntity.ok().body(person.get());
     }
