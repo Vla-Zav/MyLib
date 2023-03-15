@@ -23,7 +23,6 @@ public class PersonController {
     public ResponseEntity<List<Person>> listAllPersons() {
         List<Person> persons = personRepository.findAll();
         return ResponseEntity.ok().body(persons);
-
     }
 
     @GetMapping("/{personId}")
@@ -34,7 +33,6 @@ public class PersonController {
         if (!person.isPresent())
             throw new EntityNotFoundException("id-" + personId);
         return ResponseEntity.ok().body(person.get());
-
     }
 
     @PostMapping
