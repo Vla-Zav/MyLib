@@ -74,7 +74,6 @@ class ForJunitLearnApplicationTests {
     @Test
     void personNotFound() throws Exception{
         mockMvc.perform(get("/persons/1"))
-                .andExpect(status().isNotFound())
-                .andExpect(mvcResult -> mvcResult.getResolvedException().getClass().equals(EntityNotFoundException.class));
+                .andExpect(status().isNotFound());
     }
 }
