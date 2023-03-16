@@ -38,7 +38,7 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<Person> createPerson(@RequestBody @Valid Person person) {
         Person p = personRepository.save(person);
-        return ResponseEntity.status(201).body(p);
+        return ResponseEntity.status(201).build();
     }
 
     @PutMapping("/{personId}")
@@ -47,6 +47,7 @@ public class PersonController {
         Optional<Person> p = personRepository.findById(personId);
         if (!p.isPresent())
             return ResponseEntity.notFound().build();
+        person.setId(personId);
         return ResponseEntity.ok().body(personRepository.save(person));
     }
 

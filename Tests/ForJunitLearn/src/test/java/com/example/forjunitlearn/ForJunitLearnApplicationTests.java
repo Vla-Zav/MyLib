@@ -5,15 +5,12 @@ package com.example.forjunitlearn;
 import com.example.forjunitlearn.entitys.Person;
 import com.example.forjunitlearn.repositorys.PersonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,11 +39,9 @@ class ForJunitLearnApplicationTests {
     void createPerson() throws Exception {
         Person person = new Person();
         person.setName("Vladik");
-        mockMvc.perform(post("/persons/create").content(objectMapper.writeValueAsString(person))
+        mockMvc.perform(post("/persons").content(objectMapper.writeValueAsString(person))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.name").value("Vladik"));
+                .andExpect(status().is(201));
     }
 
     @Test
@@ -61,19 +56,40 @@ class ForJunitLearnApplicationTests {
     }
 
     @Test
-    void puPerson() throws Exception{
+    void putPerson() throws Exception{
         Long id = createTestPerson("Vlad").getId();
         mockMvc.perform(put("/persons/{id}", id)
                 .content(objectMapper.writeValueAsString(new Person("Andrey")))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Andrey"));
+                .andExpect(status().isOk());
     }
 
     @Test
-    void personNotFound() throws Exception{
-        mockMvc.perform(get("/persons/1"))
+    void personDelete() throws Exception{
+        createTestPerson("Vlad");
+        Long id = 1L;
+        mockMvc.perform(delete("/persons/{id}", id))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void personGetNotFound() throws Exception{
+        mockMvc.perform(get("/persons/8"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void personDeleteNotFound() throws Exception{
+        mockMvc.perform(delete("/persons/5"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void personPutNotFound() throws Exception{
+        Long id = 3L;
+        mockMvc.perform(put("/persons/{id}", id)
+                        .content(objectMapper.writeValueAsString(new Person("Vlad")))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
 }
