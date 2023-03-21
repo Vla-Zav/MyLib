@@ -5,6 +5,7 @@ package com.example.forjunitlearn;
 import com.example.forjunitlearn.entitys.Person;
 import com.example.forjunitlearn.repositorys.PersonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,12 +31,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 @Testcontainers
 @ContextConfiguration(initializers = ForJunitLearnApplicationTests.Initializer.class)
-@TestPropertySource(properties = {"spring.config.location=classpath:application-properties.yml"})
+@TestPropertySource(properties = {"spring.config.location=classpath:application.yml"})
 class ForJunitLearnApplicationTests {
 
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.1")
-            .withDatabaseName("MyTestContainer")
+            .withDatabaseName("MyTestDB")
             .withReuse(true);
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
@@ -49,6 +50,12 @@ class ForJunitLearnApplicationTests {
 
     @Test
     void testContainer(){
+        assertEquals("MyTestDB", postgreSQLContainer.getDatabaseName());
+    }
+
+    @AfterEach
+    void clearDB(){
+        personRepository.deleteAll();
     }
     @Autowired
     private ObjectMapper objectMapper;

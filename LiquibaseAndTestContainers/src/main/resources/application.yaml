@@ -1,0 +1,7 @@
+datasource:
+    url: jdbc:postgresql://localhost/
+    username: test_user
+    password: test_password
+    driver-class-name: org.postgresql.Driver
+liquibase:
+    change-log: classpath:db/changelog-master.yaml
