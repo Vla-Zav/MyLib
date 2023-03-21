@@ -5,36 +5,65 @@ package com.example.forjunitlearn;
 import com.example.forjunitlearn.entitys.Person;
 import com.example.forjunitlearn.repositorys.PersonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Testcontainers
+@ContextConfiguration(initializers = ForJunitLearnApplicationTests.Initializer.class)
+@TestPropertySource(properties = {"spring.config.location=classpath:application-properties.yml"})
 class ForJunitLearnApplicationTests {
+
+    @Container
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:15.1")
+            .withDatabaseName("MyTestContainer")
+            .withReuse(true);
+
+    static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
+        public void initialize(ConfigurableApplicationContext configurableApplicationContext){
+            TestPropertyValues.of("CONTAINER.URL=" + postgreSQLContainer.getJdbcUrl(),
+                    "CONTAINER.USERNAME=" + postgreSQLContainer.getUsername(),
+                    "CONTAINER.PASSWORD=" + postgreSQLContainer.getPassword())
+                    .applyTo(configurableApplicationContext.getEnvironment());
+        }
+    }
+
+    @Test
+    void testContainer(){
+    }
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private PersonRepository personRepository;
     @Autowired
     private MockMvc mockMvc;
-    @AfterEach
-    public void resetDB(){
-        personRepository.deleteAll();
-    }
 
     private Person createTestPerson(String name){
         Person person = new Person(name);
         return personRepository.save(person);
     }
+
+
+
     @Test
     void createPerson() throws Exception {
         Person person = new Person();

@@ -27,7 +27,6 @@ class TestSecurityApplicationTests {
 
     @Test
     void registerTest() throws Exception{
-        User user = new User();
         mockMvc.perform(get("/api/auth")).andExpect(status().isLocked());
     }
 }

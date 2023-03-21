@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    own:
+      username: ${CONTAINER.USERNAME}
+      password: ${CONTAINER.PASSWORD}
+      url: ${CONTAINER.URL}

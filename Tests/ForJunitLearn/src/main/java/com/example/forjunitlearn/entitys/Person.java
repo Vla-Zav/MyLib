@@ -14,10 +14,10 @@ import javax.validation.constraints.Size;
 @Data
 public class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     @NonNull
-    @Size(min = 3, max = 10)
+    @Size(max = 50)
     private String name;
 
     public Person() {
