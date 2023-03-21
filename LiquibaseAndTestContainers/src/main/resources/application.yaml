@@ -1,16 +1,11 @@
 spring:
-    datasource:
-        url: jdbc:postgresql://localhost:5432/TestLiquibaseDB
-        username: test_user
-        password: test_password
-        driver-class-name: org.postgresql.Driver
-    liquibase:
-        change-log: classpath:db/changelog-master.yaml
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
 
-    jpa:
-        show-sql: true
-        hibernate:
-            ddl-auto: none
-        properties:
-            hibernate:
-                format_sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/LiquibaseDB
+    username: Vlad
+    password: root
