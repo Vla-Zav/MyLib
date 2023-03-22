@@ -1,8 +1,8 @@
 databaseChangeLog:
-  - logicalFilePath: db/changelog/db.changelog-lesson1.yaml
+  - logicalFilePath: db/changelog/db.changelog-my.yaml
   - changeSet:
       id: 1
-      author: your_liquibase_username
+      author: vlad
       changes:
         - createTable:
             tableName: users
@@ -30,7 +30,7 @@ databaseChangeLog:
                   type: varchar(50)
   - changeSet:
       id: 2
-      author: your_liquibase_username
+      author: vlad
       comment: "Create admin user"
       changes:
         - insert:
