@@ -9,3 +9,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/LiquibaseDB
     username: Vlad
     password: root
+    own:
+      username: ${CONTAINER.USERNAME}
+      password: ${CONTAINER.PASSWORD}
+      url: ${CONTAINER.URL}
+
+  liquibase:
+    contexts: ${CONTAINER.LIQUIBASE}
