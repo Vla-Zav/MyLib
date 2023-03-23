@@ -5,10 +5,9 @@ spring:
     show-sql: false
 
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/LiquibaseDB
-    username: Vlad
-    password: root
-
+    username: test
+    password: test
+    url: jdbc:tc:postgresql:///test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   liquibase:
     change-log: classpath:liquibase/db.changelog-master.yaml
