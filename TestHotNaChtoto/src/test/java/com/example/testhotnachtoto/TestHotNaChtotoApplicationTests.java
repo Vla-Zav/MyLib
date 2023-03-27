@@ -1,6 +1,7 @@
 package com.example.testhotnachtoto;
 
-import com.example.testhotnachtoto.repa.UsersRepository;
+import com.example.testhotnachtoto.entitys.User;
+import com.example.testhotnachtoto.repa.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
 class TestHotNaChtotoApplicationTests {
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
     @Test
     void findUserById() {
-        var user = usersRepository.findById(1L);
-        Assertions.assertThat(user.get().getName()).isEqualTo("admin");
+        assertEquals(2, userRepository.count());
     }
 }

@@ -10,4 +10,4 @@ spring:
     url: jdbc:tc:postgresql:///test
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   liquibase:
-    change-log: classpath:liquibase/db.changelog-master.yaml
+    change-log: classpath:db/changelog/db.changelog-master.yaml
