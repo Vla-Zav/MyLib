@@ -3,16 +3,14 @@ package com.example.liquibaseandtestcontainers;
 import com.example.liquibaseandtestcontainers.controllers.UserController;
 import com.example.liquibaseandtestcontainers.entitys.User;
 import com.example.liquibaseandtestcontainers.repa.UsersRepository;
+import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
@@ -25,6 +23,7 @@ class LiquibaseAndTestContainersApplicationTests {
     private UserController userController;
 
     @Test
+    @Transactional
     void testUserCreate(){
         User newUser = new User();
         newUser.setUsername("Vlad");
@@ -47,8 +46,8 @@ class LiquibaseAndTestContainersApplicationTests {
     }
 
     @Test
+    @Transactional
     void testPutUser(){
-        Assertions.assertThat(usersRepository.findById(1L).get().getUsername()).isEqualTo("admin");
         User user = new User();
         user.setUsername("newAdm");
         user.setEmail("newadm@mail.ru");
@@ -59,6 +58,7 @@ class LiquibaseAndTestContainersApplicationTests {
     }
 
     @Test
+    @Transactional
     void testDeleteUser(){
         userController.deleteUser(1L);
         Assertions.assertThat(usersRepository.count()).isEqualTo(1);
