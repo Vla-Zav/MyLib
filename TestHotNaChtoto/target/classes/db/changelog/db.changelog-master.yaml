@@ -15,48 +15,47 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: username
+                  name: name
                   type: varchar(50)
                   constraints:
                     unique: true
                     nullable: false
               - column:
+                  name: email
+                  type: varchar(50)
+              - column:
                   name: password
                   type: varchar(512)
                   constraints:
                     nullable: false
-              - column:
-                  name: email
-                  type: varchar(50)
   - changeSet:
       id: 2
       author: vlad
-      comment: "Create admin user"
       changes:
         - insert:
             tableName: users
             columns:
               - column:
-                  name: username
-                  value: "admin"
-              - column:
-                  name: password
+                  name: name
                   value: "admin"
               - column:
                   name: email
                   value: "admin@server.com"
+              - column:
+                  name: password
+                  value: "admin"
         - insert:
             tableName: users
             columns:
               - column:
-                  name: username
-                  value: "guest"
-              - column:
-                  name: password
+                  name: name
                   value: "guest"
               - column:
                   name: email
                   value: "guest@server.com"
+              - column:
+                  name: password
+                  value: "guest"
       rollback:
         - delete:
             tableName: users

@@ -5,13 +5,14 @@ import com.example.liquibaseandtestcontainers.entitys.User;
 import com.example.liquibaseandtestcontainers.repa.UsersRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 class LiquibaseAndTestContainersApplicationTests {
 
@@ -32,5 +33,10 @@ class LiquibaseAndTestContainersApplicationTests {
         List<User> users = userController.getUsers().getBody();
         Assertions.assertThat(users).isNotNull();
         Assertions.assertThat(users.size()).isEqualTo(2);
+    }
+
+    @Test
+    void controllerTest(){
+
     }
 }
